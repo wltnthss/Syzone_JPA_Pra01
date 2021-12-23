@@ -19,13 +19,15 @@ public class jpaMain {
             //emTestDetach(em);
             //emTestClear(em);
             //emEqualTest(em);
-            emUpdateTest(em);
-            //mappingTest2(em);
+            //emUpdateTest(em);
+            mappingTest2(em);
             //mappingTest3(em);
             //mappingTest4(em);
             //mappingTest5(em);
             //oneToOnemappingTest6(em);
             //oneToOneDirmappingTest7(em);
+            //Member member = new Member(2L, "bbb");
+            //em.persist(member);
             tx.commit();
         } catch (Exception e){
             e.printStackTrace();
@@ -36,10 +38,28 @@ public class jpaMain {
         emf.close();
     }
 
-    private static void emUpdateTest(EntityManager em) {
-        Member member = em.find(Member.class, 2L);
-        member.setName("CCC");
+    private static void mappingTest2(EntityManager em) {
+        Team team = new Team();
+        team.setName("TeamA");
+        em.persist(team);
+
+        Member member = new Member();
+        member.setUsername("member1");
+        member.setTeam(team);
+        em.persist(member);
+
+        em.flush();
+        em.clear();
+
+        Member findMember = em.find(Member.class, member.getId());
+        System.out.println(findMember.getTeam().getName());
+
     }
+
+//    private static void emUpdateTest(EntityManager em) {
+//        Member member = em.find(Member.class, 2L);
+//        member.setName("CCC");
+//    }
 
     private static void emEqualTest(EntityManager em) {
         Member member1 = em.find(Member.class, 2L);
